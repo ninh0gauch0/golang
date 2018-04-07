@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/JulianCobas/golang/http_server_example/server"
+	"github.com/Ninh0Gauch0/golang/http_server_example/server"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
