@@ -1,2 +1,3 @@
 # golang
-Golang examples
+
+Golang course examples and personal apps.
