@@ -62,18 +62,6 @@ func (mc *MongoConf) GetPort() string {
 	return mc.port
 }
 
-// Recipe DTO
-type Recipe struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-}
-
-// Status DTO
-type Status struct {
-	Code        int    `json:"code"`
-	Description string `json:"description"`
-}
-
 // HRAResponse DTO
 type HRAResponse struct {
 	status Status `json:"status"`
