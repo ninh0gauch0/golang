@@ -3,10 +3,13 @@ package server
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 )
+
+/** MAIN TYPES **/
 
 // Server struct
 type Server struct {
@@ -25,7 +28,7 @@ type Worker struct {
 	Ctx context.Context
 }
 
-/** Logger **/
+/* Logger */
 
 // LoggerTrait - a logger trait that let's you configure a log
 type LoggerTrait struct {
@@ -46,52 +49,44 @@ func (lt *LoggerTrait) GetLogger() *log.Entry {
 
 /** DTOs **/
 
-// MongoConf DTO
-type MongoConf struct {
-	host string
-	port string
+// ResponseObject interface
+type ResponseObject interface {
+	getObjectInfo() string
 }
 
-// GetHost - returns the host
-func (mc *MongoConf) GetHost() string {
-	return mc.host
+/* Status Definition */
+
+// Status DTO
+type Status struct {
+	Code        string `json:"code"`
+	Description string `json:"description"`
 }
 
-// GetPort - returns the port
-func (mc *MongoConf) GetPort() string {
-	return mc.port
+// Interface ResponseObject Implementation
+func (r *Status) getObjectInfo() string {
+	info := []string{
+		r.Code,
+		r.Description,
+	}
+	resp := strings.Join(info, ": ")
+	return resp
 }
+
+/* HRAResponse Definition */
 
 // HRAResponse DTO
 type HRAResponse struct {
-	status Status `json:"status"`
-	recipe Recipe `json:"recipe"`
+	Status  Status         `json:"status"`
+	RespObj ResponseObject `json:"respObj"`
+	Error   HRSError       `json:"error"`
 }
 
-/* Errors */
-
-// err       error
-type NorgateMathError struct {
-	lat, long string
-	err       error
+// SetError function
+func (fe *HRAResponse) SetError(err HRSError) {
+	fe.Error = err
 }
 
-/*  // EXAMPLE
-
-type DeployRequest struct {
-	ID          string `json:"_id"`
-	Ns          string `json:"ns"`
-	Description string `json:"description"`
-	Deploy      struct {
-		DocTypes []struct {
-			DocTypeID string `json:"docTypeId"`
-		} `json:"docTypes"`
-		Document []struct {
-			Name     string `json:"name"`
-			DocTypes []struct {
-				DocTypeID string `json:"docTypeId"`
-			} `json:"docTypes"`
-		} `json:"document"`
-	} `json:"deploy"`
+// GetError function
+func (fe *HRAResponse) GetError() HRSError {
+	return fe.Error
 }
-*/

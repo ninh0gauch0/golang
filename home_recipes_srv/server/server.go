@@ -74,9 +74,11 @@ func (s *Server) addRoutes() {
 		vars := mux.Vars(r)
 		id := vars["id"]
 
-		recipe := s.worker.GetRecipeByID(id)
-		s.logger.Infoln("Receipe returned: %s", recipe.Name)
-		// returns
+		hrsResp := s.worker.GetRecipeByID(id)
+		s.logger.Infoln("Receipe returned: %s", hrsResp.GetError())
+
+		// TODO:return response object
+
 		fmt.Fprintf(w, "You've requested the recipe: %s\n", id)
 	}).Methods("GET").Schemes("http")
 

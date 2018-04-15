@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	version = "1.0.0-beta"
+	version = "0.1.0-beta"
 )
 
 var (
@@ -30,6 +30,10 @@ func init() {
 		QuoteEmptyFields: true,
 	}
 	logger.Out = os.Stdout
+	logger.SetLevel(log.InfoLevel)
+	// Log as JSON instead of the default ASCII formatter.
+	//log.SetFormatter(&log.JSONFormatter{})
+
 	contextLogger = logger.WithFields(log.Fields{
 		"service": "Home Recipes Service",
 	})
@@ -37,7 +41,7 @@ func init() {
 
 func main() {
 	// Create a cli app
-	contextLogger.Debugf("Starting app...")
+	contextLogger.Infof("Starting app...")
 	app := cli.NewApp()
 	app.Version = version
 	app.Description = "Home Recipes App is an application made for my girlfriend; she's an awesome cook :D"
@@ -74,6 +78,14 @@ func main() {
 		serverContext, cancelFunc := context.WithCancel(baseContext)
 		s := server.Server{
 			Ctx: serverContext,
+		}
+
+		if c.Bool("verbose") {
+			contextLogger.Logger.SetLevel(log.DebugLevel)
+		}
+
+		if c.Bool("quiet") {
+			contextLogger.Logger.SetLevel(log.FatalLevel)
 		}
 
 		// Sets the logger to the server
