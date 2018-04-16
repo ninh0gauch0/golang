@@ -54,7 +54,7 @@ func main() {
 
 	// Flags definition
 	app.Flags = []cli.Flag{
-		cli.BoolFlag{Name: "verbose, v", Usage: "If set, the log level is set to DEBUG"},
+		cli.BoolFlag{Name: "debug, d", Usage: "If set, the log level is set to DEBUG"},
 		cli.BoolFlag{Name: "quiet, q", Usage: "If set, the log level is set to FATAL"},
 	}
 
